@@ -49,16 +49,9 @@ namespace Sample
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultTokenProviders();
+
             services
                 .Configure<MongoDBOption>(Configuration.GetSection("MongoDBOption"))
-                //.AddTransient(provider =>
-                //{
-                //    var options = provider.GetService<IOptions<MongoDBOption>>();
-                //    var client = new MongoClient(options.Value.ConnectionString);
-                //    var database = client.GetDatabase(options.Value.Database);
-
-            //    return database;
-            //})
                 .AddMongoDatabase()
                 .AddMongoDbContext<ApplicationUser, IdentityRole>()
                 .AddMongoStore<ApplicationUser, IdentityRole>();
