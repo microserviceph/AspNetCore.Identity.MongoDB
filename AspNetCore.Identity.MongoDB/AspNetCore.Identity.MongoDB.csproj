@@ -1,6 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Michael de Guzman</Authors>
+    <Company>Vsslabs</Company>
+    <Description>ASP.NET Core Identity Extension using Mongo DB as storage</Description>
+    <PackageLicenseUrl>https://github.com/microserviceph/AspNetCore.Identity.MongoDB/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/microserviceph/AspNetCore.Identity.MongoDB</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/microserviceph/AspNetCore.Identity.MongoDB</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>aspnetcore;identity;membership;mongodb</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.2" />
