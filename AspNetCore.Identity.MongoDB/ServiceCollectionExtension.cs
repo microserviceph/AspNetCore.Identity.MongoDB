@@ -15,8 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection AddMongoDatabase<TUser>(this IServiceCollection services)
-           where TUser : IdentityUser
+        public static IServiceCollection AddMongoDatabase(this IServiceCollection services)
         {
             services.AddTransient(provider =>
              {
@@ -30,18 +29,24 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection AddMongoDbContext<TUser>(this IServiceCollection services) 
+        public static IServiceCollection AddMongoDbContext<TUser, TRole>(this IServiceCollection services) 
             where TUser : IdentityUser
+            where TRole : IdentityRole
         {
-            services.AddTransient<IUserDbContext<TUser>, MongoDbContext<TUser>>();
+            services.AddTransient<IUserDbContext<TUser>, MongoDbContext<TUser, TRole>>();
+            services.AddTransient<IRoleDbContext<TRole>, MongoDbContext<TUser, TRole>>();
+
             return services;
         }
 
-        public static IServiceCollection AddMongoUserStore<TUser>(this IServiceCollection services) 
+        public static IServiceCollection AddMongoStore<TUser, TRole>(this IServiceCollection services) 
             where TUser : IdentityUser
+            where TRole : IdentityRole
         {
             services.AddTransient<IUserStore<TUser>, UserStore<TUser>>();
+            services.AddTransient<IRoleStore<TRole>, RoleStore<TRole>>();
 
+            
             return services;
         }
     }

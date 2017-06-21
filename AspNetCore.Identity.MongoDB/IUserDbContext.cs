@@ -7,4 +7,9 @@ namespace AspNetCore.Identity.MongoDB
     {
         IMongoCollection<TUser> User { get; }
     }
+
+    public interface IRoleDbContext<TRole>
+    {
+        IMongoCollection<TRole> Role { get; }
+    }
 }

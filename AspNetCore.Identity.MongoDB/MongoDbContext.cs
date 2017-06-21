@@ -5,13 +5,17 @@ using MongoDB.Driver;
 namespace AspNetCore.Identity.MongoDB
 {
 
-    public class MongoDbContext<TUser> : IUserDbContext<TUser> where TUser : IdentityUser
+    public class MongoDbContext<TUser, TRole> : IUserDbContext<TUser> , IRoleDbContext<TRole>
+        where TUser : IdentityUser
+        where TRole : IdentityRole
     {
         public MongoDbContext(IMongoDatabase database, IOptions<MongoDBOption> option)
         {
             User = database.GetCollection<TUser>(option.Value.User.CollectionName);
+            Role = database.GetCollection<TRole>(option.Value.Role.CollectionName);
         }
 
         public IMongoCollection<TUser> User { get; private set; }
+        public IMongoCollection<TRole> Role { get; private set; }
     }
 }
