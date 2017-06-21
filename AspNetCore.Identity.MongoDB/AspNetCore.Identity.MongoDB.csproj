@@ -10,6 +10,7 @@
     <RepositoryUrl>https://github.com/microserviceph/AspNetCore.Identity.MongoDB</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>aspnetcore;identity;membership;mongodb</PackageTags>
+    <PackageId>MikeDg.AspNetCore.Identity.MongoDB</PackageId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.2" />
