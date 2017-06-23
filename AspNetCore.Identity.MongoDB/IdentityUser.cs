@@ -135,9 +135,6 @@ namespace AspNetCore.Identity.MongoDB
             }
             else
             {
-                //existingLoginInfo.AccessToken = loginInfo.AccessToken;
-                //existingLoginInfo.RefreshToken = loginInfo.RefreshToken;
-                //existingLoginInfo.ExpireAt = loginInfo.ExpireAt;
                 existingLoginInfo.ProviderDisplayName = loginInfo.ProviderDisplayName;
             }
         }
@@ -158,7 +155,7 @@ namespace AspNetCore.Identity.MongoDB
         #region Auth Token Operation
         public void AddToken(AuthToken token)
         {
-            var existingToken = AuthTokens.SingleOrDefault(t => t.LoginProvider == token.LoginProvider);
+            var existingToken = AuthTokens.SingleOrDefault(t => t.LoginProvider == token.LoginProvider && t.Name == token.Name);
             if (existingToken == null)
             {
                 AuthTokens.Add(token);
