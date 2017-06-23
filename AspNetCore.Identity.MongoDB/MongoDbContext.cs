@@ -5,7 +5,7 @@ using MongoDB.Driver;
 namespace AspNetCore.Identity.MongoDB
 {
 
-    public class MongoDbContext<TUser, TRole> : IUserDbContext<TUser> , IRoleDbContext<TRole>
+    public class MongoDbContext<TUser, TRole> : IMongoDBDbContext<TUser, TRole> 
         where TUser : IdentityUser
         where TRole : IdentityRole
     {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AspNetCore.Identity.MongoDB
 {
-    public class UserStore<TUser> :
+    public class UserStore<TUser, TRole> :
         IUserLoginStore<TUser>,
         IUserClaimStore<TUser>,
         IUserPasswordStore<TUser>,
@@ -24,10 +24,12 @@ namespace AspNetCore.Identity.MongoDB
         IUserStore<TUser>
 
         where TUser : IdentityUser
-    {
-        private readonly IUserDbContext<TUser> _dbContext;
+        where TRole : IdentityRole
 
-        public UserStore(IUserDbContext<TUser> dbContext)
+    {
+        private readonly IMongoDBDbContext<TUser, TRole> _dbContext;
+
+        public UserStore(IMongoDBDbContext<TUser, TRole> dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
@@ -59,9 +61,16 @@ namespace AspNetCore.Identity.MongoDB
             }), cancellationToken);
         }
 
-        public Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+        public async Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
         {
-            return Task.Run(() => user.AddRole(roleName), cancellationToken);
+            var roleEntity = await _dbContext.Role.Find(r => r.NormalizedName == roleName).SingleOrDefaultAsync(cancellationToken);
+
+            if (roleEntity == null)
+            {
+                throw new InvalidOperationException($"Role '${roleName}' not found");
+            }
+
+            user.AddRole(roleName);
         }
 
         public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
@@ -94,16 +103,11 @@ namespace AspNetCore.Identity.MongoDB
             return _dbContext.User.Find(filter).SingleOrDefaultAsync(cancellationToken);
         }
 
-        public Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
+        public async Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
         {
-            var filter = Builders<UserLoginInfo>.Filter.And(
-                Builders<UserLoginInfo>.Filter.Eq(u => u.LoginProvider, loginProvider),
-                Builders<UserLoginInfo>.Filter.Eq(u => u.ProviderKey, providerKey));
-
-            var finalFilter = Builders<TUser>.Filter.ElemMatch(p => p.Logins, filter);
-
-            return _dbContext.User.Find(finalFilter).SingleOrDefaultAsync(cancellationToken);
-            //return (await users.FindAsync(u => u.Logins.Any(li => li.LoginProvider == loginProvider && li.ProviderKey == providerKey), null, cancellationToken)).SingleOrDefault();
+            return await _dbContext.User.Find(user => user.Logins.Any(loginInfo => loginInfo.ProviderKey == providerKey), new FindOptions
+            {
+            }).SingleOrDefaultAsync(cancellationToken);
         }
 
         public Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -326,12 +330,19 @@ namespace AspNetCore.Identity.MongoDB
 
         public Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken cancellationToken)
         {
-            return Task.Run(() => user.AddToken(new AuthToken
+            return Task.Run(() =>
             {
-                Token = value,
-                Name = name,
-                LoginProvider = loginProvider
-            }), cancellationToken);
+                var authToken = user.AuthTokens.SingleOrDefault(t => t.LoginProvider == loginProvider && t.Name == name);
+                if (authToken == null)
+                    user.AddToken(new AuthToken
+                    {
+                        Token = value,
+                        Name = name,
+                        LoginProvider = loginProvider
+                    });
+                else
+                    authToken.Token = value;
+            }, cancellationToken);
         }
 
         public Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)

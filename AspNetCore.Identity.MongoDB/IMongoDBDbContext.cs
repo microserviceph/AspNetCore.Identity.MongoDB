@@ -3,13 +3,10 @@
 
 namespace AspNetCore.Identity.MongoDB
 {
-    public interface IUserDbContext<TUser>
+    public interface IMongoDBDbContext<TUser, TRole>
     {
         IMongoCollection<TUser> User { get; }
-    }
 
-    public interface IRoleDbContext<TRole>
-    {
         IMongoCollection<TRole> Role { get; }
     }
 }

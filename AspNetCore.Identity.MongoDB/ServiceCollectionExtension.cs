@@ -33,8 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where TUser : IdentityUser
             where TRole : IdentityRole
         {
-            services.AddTransient<IUserDbContext<TUser>, MongoDbContext<TUser, TRole>>();
-            services.AddTransient<IRoleDbContext<TRole>, MongoDbContext<TUser, TRole>>();
+            services.AddTransient<IMongoDBDbContext<TUser, TRole>, MongoDbContext<TUser, TRole>>();
 
             return services;
         }
@@ -43,8 +42,8 @@ namespace Microsoft.Extensions.DependencyInjection
             where TUser : IdentityUser
             where TRole : IdentityRole
         {
-            services.AddTransient<IUserStore<TUser>, UserStore<TUser>>();
-            services.AddTransient<IRoleStore<TRole>, RoleStore<TRole>>();
+            services.AddTransient<IUserStore<TUser>, UserStore<TUser, TRole>>();
+            services.AddTransient<IRoleStore<TRole>, RoleStore<TUser, TRole>>();
 
             
             return services;

@@ -7,12 +7,13 @@ using MongoDB.Driver;
 
 namespace AspNetCore.Identity.MongoDB
 {
-    public class RoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole>
+    public class RoleStore<TUser, TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole>
+        where TUser : IdentityUser
         where TRole : IdentityRole
     {
-        private readonly IRoleDbContext<TRole> _dbContext;
+        private readonly IMongoDBDbContext<TUser, TRole> _dbContext;
 
-        public RoleStore(IRoleDbContext<TRole> dbContext)
+        public RoleStore(IMongoDBDbContext<TUser, TRole> dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
