@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Michael de Guzman</Authors>
     <Company>Vsslabs</Company>
@@ -11,11 +11,12 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>aspnetcore;identity;membership;mongodb</PackageTags>
     <PackageId>MikeDg.AspNetCore.Identity.MongoDB</PackageId>
-    <Version>1.0.1</Version>
+    <Version>2.0.0-beta1</Version>
+    <Product>MikeDg.AspNetCore.Identity.MongoDB</Product>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
-    <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
   </ItemGroup>
 </Project>

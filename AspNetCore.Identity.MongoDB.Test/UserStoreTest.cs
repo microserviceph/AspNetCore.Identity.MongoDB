@@ -267,7 +267,7 @@ namespace AspNetCore.Identity.MongoDB.Test
             services
                 .Configure((MongoDBOption option) =>
                 {
-                    option.ConnectionString = "mongodb://192.168.103.115:27017";
+                    option.ConnectionString = "mongodb://192.168.1.125:27017";
                     option.Database = "AspCoreIdentity";
                 })
                 .AddMongoDatabase()

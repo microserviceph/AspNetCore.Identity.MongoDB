@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Sample.Models.ManageViewModels
 {
-    public class FactorViewModel
+    public class ShowRecoveryCodesViewModel
     {
-        public string Purpose { get; set; }
+        public string[] RecoveryCodes { get; set; }
     }
 }

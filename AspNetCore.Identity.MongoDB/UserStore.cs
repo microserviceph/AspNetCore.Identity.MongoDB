@@ -105,9 +105,11 @@ namespace AspNetCore.Identity.MongoDB
 
         public async Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
         {
-            return await _dbContext.User.Find(user => user.Logins.Any(loginInfo => loginInfo.ProviderKey == providerKey), new FindOptions
+            var found = await _dbContext.User.Find(user => user.Logins.Any(loginInfo => loginInfo.ProviderKey == providerKey), new FindOptions
             {
             }).SingleOrDefaultAsync(cancellationToken);
+
+            return found;
         }
 
         public Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
